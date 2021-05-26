@@ -1,5 +1,8 @@
 package rentacar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -7,15 +10,16 @@ import java.util.List;
 
 /**
  * The persistent class for the appuser database table.
- * 
+ *
  */
+
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
 @Entity
-@NamedQuery(name="Appuser.findAll", query="SELECT a FROM Appuser a")
 public class Appuser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="APPUSER_ID_GENERATOR", sequenceName="APPUSER_SEQ")
+	@SequenceGenerator(name="APPUSER_ID_GENERATOR", sequenceName="APPUSER_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="APPUSER_ID_GENERATOR")
 	private Integer id;
 
@@ -43,27 +47,12 @@ public class Appuser implements Serializable {
 
 	private String username;
 
-	//bi-directional many-to-one association to Location
-	@OneToMany(mappedBy="appuser")
-	private List<Location> locations;
-
-	//bi-directional many-to-one association to Reservation
-	@OneToMany(mappedBy="appuser1")
-	private List<Reservation> reservations1;
-
-	//bi-directional many-to-one association to Reservation
-	@OneToMany(mappedBy="appuser2")
-	private List<Reservation> reservations2;
-
-	public Appuser() {
-	}
+//	@JsonIgnore
+//	@OneToMany(mappedBy="appuser")
+//	private List<Reservation> reservations;
 
 	public Integer getId() {
 		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getAdress() {
@@ -145,71 +134,4 @@ public class Appuser implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	public List<Location> getLocations() {
-		return this.locations;
-	}
-
-	public void setLocations(List<Location> locations) {
-		this.locations = locations;
-	}
-
-	public Location addLocation(Location location) {
-		getLocations().add(location);
-		location.setAppuser(this);
-
-		return location;
-	}
-
-	public Location removeLocation(Location location) {
-		getLocations().remove(location);
-		location.setAppuser(null);
-
-		return location;
-	}
-
-	public List<Reservation> getReservations1() {
-		return this.reservations1;
-	}
-
-	public void setReservations1(List<Reservation> reservations1) {
-		this.reservations1 = reservations1;
-	}
-
-	public Reservation addReservations1(Reservation reservations1) {
-		getReservations1().add(reservations1);
-		reservations1.setAppuser1(this);
-
-		return reservations1;
-	}
-
-	public Reservation removeReservations1(Reservation reservations1) {
-		getReservations1().remove(reservations1);
-		reservations1.setAppuser1(null);
-
-		return reservations1;
-	}
-
-	public List<Reservation> getReservations2() {
-		return this.reservations2;
-	}
-
-	public void setReservations2(List<Reservation> reservations2) {
-		this.reservations2 = reservations2;
-	}
-
-	public Reservation addReservations2(Reservation reservations2) {
-		getReservations2().add(reservations2);
-		reservations2.setAppuser2(this);
-
-		return reservations2;
-	}
-
-	public Reservation removeReservations2(Reservation reservations2) {
-		getReservations2().remove(reservations2);
-		reservations2.setAppuser2(null);
-
-		return reservations2;
-	}
-
 }

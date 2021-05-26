@@ -1,5 +1,8 @@
 package rentacar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -10,13 +13,13 @@ import java.util.List;
  * The persistent class for the rent database table.
  * 
  */
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
 @Entity
-@NamedQuery(name="Rent.findAll", query="SELECT r FROM Rent r")
 public class Rent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="RENT_ID_GENERATOR", sequenceName="RENT_SEQ")
+	@SequenceGenerator(name="RENT_ID_GENERATOR", sequenceName="RENT_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RENT_ID_GENERATOR")
 	private Integer id;
 
@@ -30,15 +33,16 @@ public class Rent implements Serializable {
 	//bi-directional many-to-one association to PaymentMethod
 	@ManyToOne
 	@JoinColumn(name="payment_method")
-	private PaymentMethod paymentMethodBean;
+	private PaymentMethod paymentMethod;
 
 	//bi-directional many-to-one association to Reservation
 	@ManyToOne
 	@JoinColumn(name="reservation")
-	private Reservation reservationBean;
+	private Reservation reservation;
 
 	//bi-directional many-to-one association to Report
-	@OneToMany(mappedBy="rentBean")
+	//@JsonIgnore
+	@OneToMany(mappedBy= "rent")
 	private List<Report> reports;
 
 	public Rent() {
@@ -76,20 +80,20 @@ public class Rent implements Serializable {
 		this.price = price;
 	}
 
-	public PaymentMethod getPaymentMethodBean() {
-		return this.paymentMethodBean;
+	public PaymentMethod getPaymentMethod() {
+		return this.paymentMethod;
 	}
 
-	public void setPaymentMethodBean(PaymentMethod paymentMethodBean) {
-		this.paymentMethodBean = paymentMethodBean;
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
-	public Reservation getReservationBean() {
-		return this.reservationBean;
+	public Reservation getReservation() {
+		return this.reservation;
 	}
 
-	public void setReservationBean(Reservation reservationBean) {
-		this.reservationBean = reservationBean;
+	public void setReservation(Reservation reservationBean) {
+		this.reservation = reservationBean;
 	}
 
 	public List<Report> getReports() {
@@ -102,14 +106,14 @@ public class Rent implements Serializable {
 
 	public Report addReport(Report report) {
 		getReports().add(report);
-		report.setRentBean(this);
+		report.setRent(this);
 
 		return report;
 	}
 
 	public Report removeReport(Report report) {
 		getReports().remove(report);
-		report.setRentBean(null);
+		report.setRent(null);
 
 		return report;
 	}

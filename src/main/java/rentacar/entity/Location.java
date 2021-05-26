@@ -1,5 +1,8 @@
 package rentacar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -9,13 +12,13 @@ import java.util.List;
  * The persistent class for the location database table.
  * 
  */
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
 @Entity
-@NamedQuery(name="Location.findAll", query="SELECT l FROM Location l")
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="LOCATION_ID_GENERATOR", sequenceName="LOCATION_SEQ")
+	@SequenceGenerator(name="LOCATION_ID_GENERATOR", sequenceName="LOCATION_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LOCATION_ID_GENERATOR")
 	private Integer id;
 
@@ -31,20 +34,14 @@ public class Location implements Serializable {
 	private Appuser appuser;
 
 	//bi-directional many-to-one association to Reservation
-	@OneToMany(mappedBy="locationBean")
+	@JsonIgnore
+	@OneToMany(mappedBy= "location")
 	private List<Reservation> reservations;
-
-	public Location() {
-	}
 
 	public Integer getId() {
 		return this.id;
 	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	
 	public String getCity() {
 		return this.city;
 	}
@@ -69,34 +66,15 @@ public class Location implements Serializable {
 		this.street = street;
 	}
 
-	public Appuser getAppuser() {
+	public Appuser getManager() {
 		return this.appuser;
 	}
 
-	public void setAppuser(Appuser appuser) {
+	public void setManager(Appuser appuser) {
 		this.appuser = appuser;
 	}
 
 	public List<Reservation> getReservations() {
 		return this.reservations;
 	}
-
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
-	}
-
-	public Reservation addReservation(Reservation reservation) {
-		getReservations().add(reservation);
-		reservation.setLocationBean(this);
-
-		return reservation;
-	}
-
-	public Reservation removeReservation(Reservation reservation) {
-		getReservations().remove(reservation);
-		reservation.setLocationBean(null);
-
-		return reservation;
-	}
-
 }

@@ -1,5 +1,8 @@
 package rentacar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -10,13 +13,13 @@ import java.util.List;
  * The persistent class for the reservation database table.
  * 
  */
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
 @Entity
-@NamedQuery(name="Reservation.findAll", query="SELECT r FROM Reservation r")
 public class Reservation implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="RESERVATION_ID_GENERATOR", sequenceName="RESERVATION_SEQ")
+	@SequenceGenerator(name="RESERVATION_ID_GENERATOR", sequenceName="RESERVATION_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RESERVATION_ID_GENERATOR")
 	private Integer id;
 
@@ -34,38 +37,32 @@ public class Reservation implements Serializable {
 	private Date returnDate;
 
 	//bi-directional many-to-one association to Rent
-	@OneToMany(mappedBy="reservationBean")
+	@JsonIgnore
+	@OneToMany(mappedBy= "reservation")
 	private List<Rent> rents;
 
 	//bi-directional many-to-one association to Appuser
 	@ManyToOne
 	@JoinColumn(name="client")
-	private Appuser appuser1;
+	private Appuser manager;
 
 	//bi-directional many-to-one association to Appuser
 	@ManyToOne
 	@JoinColumn(name="manager")
-	private Appuser appuser2;
+	private Appuser client;
 
 	//bi-directional many-to-one association to Location
 	@ManyToOne
 	@JoinColumn(name="location")
-	private Location locationBean;
+	private Location location;
 
 	//bi-directional many-to-one association to Vehicle
 	@ManyToOne
 	@JoinColumn(name="vehicle")
-	private Vehicle vehicleBean;
-
-	public Reservation() {
-	}
+	private Vehicle vehicle;
 
 	public Integer getId() {
 		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Date getDate() {
@@ -110,48 +107,48 @@ public class Reservation implements Serializable {
 
 	public Rent addRent(Rent rent) {
 		getRents().add(rent);
-		rent.setReservationBean(this);
+		rent.setReservation(this);
 
 		return rent;
 	}
 
 	public Rent removeRent(Rent rent) {
 		getRents().remove(rent);
-		rent.setReservationBean(null);
+		rent.setReservation(null);
 
 		return rent;
 	}
 
-	public Appuser getAppuser1() {
-		return this.appuser1;
+	public Appuser getManager() {
+		return this.manager;
 	}
 
-	public void setAppuser1(Appuser appuser1) {
-		this.appuser1 = appuser1;
+	public void setManager(Appuser manager) {
+		this.manager = manager;
 	}
 
-	public Appuser getAppuser2() {
-		return this.appuser2;
+	public Appuser getClient() {
+		return this.client;
 	}
 
-	public void setAppuser2(Appuser appuser2) {
-		this.appuser2 = appuser2;
+	public void setClient(Appuser client) {
+		this.client = client;
 	}
 
-	public Location getLocationBean() {
-		return this.locationBean;
+	public Location getLocation() {
+		return this.location;
 	}
 
-	public void setLocationBean(Location locationBean) {
-		this.locationBean = locationBean;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
-	public Vehicle getVehicleBean() {
-		return this.vehicleBean;
+	public Vehicle getVehicle() {
+		return this.vehicle;
 	}
 
-	public void setVehicleBean(Vehicle vehicleBean) {
-		this.vehicleBean = vehicleBean;
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
 	}
 
 }

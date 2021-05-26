@@ -1,5 +1,8 @@
 package rentacar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -9,13 +12,13 @@ import java.util.List;
  * The persistent class for the vehicle database table.
  * 
  */
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
 @Entity
-@NamedQuery(name="Vehicle.findAll", query="SELECT v FROM Vehicle v")
 public class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="VEHICLE_ID_GENERATOR", sequenceName="VEHICLE_SEQ")
+	@SequenceGenerator(name="VEHICLE_ID_GENERATOR", sequenceName="VEHICLE_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VEHICLE_ID_GENERATOR")
 	private Integer id;
 
@@ -41,18 +44,12 @@ public class Vehicle implements Serializable {
 	private String type;
 
 	//bi-directional many-to-one association to Reservation
-	@OneToMany(mappedBy="vehicleBean")
+	@JsonIgnore
+	@OneToMany(mappedBy= "vehicle")
 	private List<Reservation> reservations;
-
-	public Vehicle() {
-	}
 
 	public Integer getId() {
 		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getBrand() {
@@ -137,14 +134,14 @@ public class Vehicle implements Serializable {
 
 	public Reservation addReservation(Reservation reservation) {
 		getReservations().add(reservation);
-		reservation.setVehicleBean(this);
+		reservation.setVehicle(this);
 
 		return reservation;
 	}
 
 	public Reservation removeReservation(Reservation reservation) {
 		getReservations().remove(reservation);
-		reservation.setVehicleBean(null);
+		reservation.setVehicle(null);
 
 		return reservation;
 	}

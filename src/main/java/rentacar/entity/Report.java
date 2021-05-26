@@ -1,5 +1,8 @@
 package rentacar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -7,50 +10,44 @@ import java.util.Date;
 
 /**
  * The persistent class for the report database table.
- * 
+ *
  */
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
 @Entity
-@NamedQuery(name="Report.findAll", query="SELECT r FROM Report r")
 public class Report implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="REPORT_ID_GENERATOR", sequenceName="REPORT_SEQ")
+	@SequenceGenerator(name="REPORT_ID_GENERATOR", sequenceName="REPORT_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="REPORT_ID_GENERATOR")
 	private Integer id;
 
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	@Column(name="fuel_level")
-	private Integer fuelLevel;
-
 	private String type;
 
-	//bi-directional many-to-one association to Damage
-	@ManyToOne
-	@JoinColumn(name="damage")
-	private Damage damageBean;
+	@Column(name="fuel_level")
+	private Integer fuelLevel;
 
 	//bi-directional many-to-one association to Fine
 	@ManyToOne
 	@JoinColumn(name="fine")
-	private Fine fineBean;
+	private Fine fine;
+
+	//bi-directional many-to-one association to Damage
+	@ManyToOne
+	@JoinColumn(name="damage")
+	private Damage damage;
 
 	//bi-directional many-to-one association to Rent
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="rent")
-	private Rent rentBean;
-
-	public Report() {
-	}
+	private Rent rent;
 
 	public Integer getId() {
 		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Date getDate() {
@@ -61,14 +58,6 @@ public class Report implements Serializable {
 		this.date = date;
 	}
 
-	public Integer getFuelLevel() {
-		return this.fuelLevel;
-	}
-
-	public void setFuelLevel(Integer fuelLevel) {
-		this.fuelLevel = fuelLevel;
-	}
-
 	public String getType() {
 		return this.type;
 	}
@@ -77,28 +66,35 @@ public class Report implements Serializable {
 		this.type = type;
 	}
 
-	public Damage getDamageBean() {
-		return this.damageBean;
+	public Integer getFuelLevel() {
+		return this.fuelLevel;
 	}
 
-	public void setDamageBean(Damage damageBean) {
-		this.damageBean = damageBean;
+	public void setFuelLevel(Integer fuelLevel) {
+		this.fuelLevel = fuelLevel;
 	}
 
-	public Fine getFineBean() {
-		return this.fineBean;
+	public Fine getFine() {
+		return this.fine;
 	}
 
-	public void setFineBean(Fine fineBean) {
-		this.fineBean = fineBean;
+	public void setFine(Fine fine) {
+		this.fine = fine;
 	}
 
-	public Rent getRentBean() {
-		return this.rentBean;
+	public Damage getDamage() {
+		return this.damage;
 	}
 
-	public void setRentBean(Rent rentBean) {
-		this.rentBean = rentBean;
+	public void setDamage(Damage damage) {
+		this.damage = damage;
 	}
 
+	public Rent getRent() {
+		return this.rent;
+	}
+
+	public void setRent(Rent rent) {
+		this.rent = rent;
+	}
 }
