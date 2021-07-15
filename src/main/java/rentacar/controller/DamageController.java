@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rentacar.entity.Appuser;
 import rentacar.entity.Damage;
 import rentacar.entity.dto.DamageDTO;
 import rentacar.repository.DamageRepository;
@@ -12,6 +11,7 @@ import rentacar.repository.DamageRepository;
 import java.util.Collection;
 
 @RestController
+@CrossOrigin
 public class DamageController {
 
     @Autowired

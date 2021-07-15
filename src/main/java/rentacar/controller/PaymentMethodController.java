@@ -4,14 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rentacar.entity.Fine;
 import rentacar.entity.PaymentMethod;
 import rentacar.entity.dto.PaymentMethodDTO;
 import rentacar.repository.PaymentMethodRepository;
 
+import java.io.Console;
 import java.util.Collection;
 
 @RestController
+@CrossOrigin
 public class PaymentMethodController {
 
     @Autowired

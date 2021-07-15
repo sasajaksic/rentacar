@@ -22,6 +22,8 @@ public class VehicleDTO {
 
     public String type;
 
+    public String image;
+
     public String getBrand() {
         return brand;
     }
@@ -57,4 +59,9 @@ public class VehicleDTO {
     public String getType() {
         return type;
     }
+
+    public String getImage() {
+        return image;
+    }
+
 }

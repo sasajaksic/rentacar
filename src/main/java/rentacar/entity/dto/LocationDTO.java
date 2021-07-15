@@ -9,6 +9,8 @@ public class LocationDTO {
 
     public int manager;
 
+    public String image;
+
     public String getCity() {
         return city;
     }
@@ -23,5 +25,13 @@ public class LocationDTO {
 
     public int getManager() {
         return manager;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -43,6 +43,8 @@ public class Vehicle implements Serializable {
 
 	private String type;
 
+	private String image;
+
 	//bi-directional many-to-one association to Reservation
 	@JsonIgnore
 	@OneToMany(mappedBy= "vehicle")
@@ -122,6 +124,14 @@ public class Vehicle implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public List<Reservation> getReservations() {

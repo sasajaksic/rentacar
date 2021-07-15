@@ -11,7 +11,6 @@ import rentacar.repository.LocationRepository;
 import rentacar.repository.ReservationRepository;
 import rentacar.repository.VehicleRepository;
 
-import java.rmi.server.RemoteServer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -19,6 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @RestController
+@CrossOrigin
 public class ReservationController {
 
     @Autowired
@@ -36,6 +36,12 @@ public class ReservationController {
     @GetMapping("reservations")
     public Collection<Reservation> getAllReservations() {
         return reservationRepository.findAll();
+    }
+
+    @GetMapping("myReservations")
+    public Collection<Reservation> getMyReservations(@RequestHeader String email) {
+        Appuser user = appuserRepository.findByEmailEqualsIgnoreCase(email);
+        return reservationRepository.findByClient(user);
     }
 
     @GetMapping("reservation/{id}")

@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rentacar.entity.Appuser;
-import rentacar.entity.Fine;
 import rentacar.entity.Location;
 import rentacar.entity.dto.LocationDTO;
 import rentacar.repository.AppuserRepository;
@@ -14,6 +13,7 @@ import rentacar.repository.LocationRepository;
 import java.util.Collection;
 
 @RestController
+@CrossOrigin
 public class LocationController {
 
     @Autowired
@@ -51,6 +51,7 @@ public class LocationController {
         location.setCity(locationDTO.getCity());
         location.setStreet(locationDTO.getStreet());
         location.setNumber(locationDTO.getNumber());
+        location.setImage(locationDTO.getImage());
 
         Appuser manager = appuserRepository.getById(locationDTO.getManager());
 
@@ -75,6 +76,7 @@ public class LocationController {
         location.setCity(locationDTO.getCity());
         location.setStreet(locationDTO.getStreet());
         location.setNumber(locationDTO.getNumber());
+        location.setImage(locationDTO.getImage());
 
         Appuser manager = appuserRepository.getById(locationDTO.getManager());
 

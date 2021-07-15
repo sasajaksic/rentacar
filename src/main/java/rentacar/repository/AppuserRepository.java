@@ -8,4 +8,6 @@ import java.util.Collection;
 public interface AppuserRepository extends JpaRepository<Appuser, Integer> {
 
     Collection<Appuser> findByEmailContainingIgnoreCase(String email);
+//    Collection<Appuser> findByEmailEqualsIgnoreCase(String email);
+    Appuser findByEmailEqualsIgnoreCase(String email);
 }

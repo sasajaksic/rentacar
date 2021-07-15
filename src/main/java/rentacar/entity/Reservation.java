@@ -43,12 +43,12 @@ public class Reservation implements Serializable {
 
 	//bi-directional many-to-one association to Appuser
 	@ManyToOne
-	@JoinColumn(name="client")
+	@JoinColumn(name="manager")
 	private Appuser manager;
 
 	//bi-directional many-to-one association to Appuser
 	@ManyToOne
-	@JoinColumn(name="manager")
+	@JoinColumn(name="client")
 	private Appuser client;
 
 	//bi-directional many-to-one association to Location

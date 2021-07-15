@@ -11,6 +11,7 @@ import rentacar.repository.VehicleRepository;
 import java.util.Collection;
 
 @RestController
+@CrossOrigin
 public class VehicleController {
 
     @Autowired
@@ -75,6 +76,7 @@ public class VehicleController {
         vehicle.setProductionYear(vehicleDTO.getProductionYear());
         vehicle.setSeatNumber(vehicleDTO.getSeatNumber());
         vehicle.setType(vehicleDTO.getType());
+        vehicle.setImage(vehicleDTO.getImage());
 
         vehicleRepository.save(vehicle);
         return new ResponseEntity<Vehicle>(vehicle, HttpStatus.OK);
@@ -97,6 +99,7 @@ public class VehicleController {
         vehicle.setProductionYear(vehicleDTO.getProductionYear());
         vehicle.setSeatNumber(vehicleDTO.getSeatNumber());
         vehicle.setType(vehicleDTO.getType());
+        vehicle.setImage(vehicleDTO.getImage());
 
         vehicleRepository.save(vehicle);
         return new ResponseEntity<Vehicle>(vehicle, HttpStatus.OK);

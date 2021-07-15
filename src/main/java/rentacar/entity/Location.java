@@ -28,6 +28,8 @@ public class Location implements Serializable {
 
 	private String street;
 
+	private String image;
+
 	//bi-directional many-to-one association to Appuser
 	@ManyToOne
 	@JoinColumn(name="manager")
@@ -72,6 +74,14 @@ public class Location implements Serializable {
 
 	public void setManager(Appuser appuser) {
 		this.appuser = appuser;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public List<Reservation> getReservations() {

@@ -6,11 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rentacar.entity.Appuser;
 import rentacar.entity.dto.AppuserDTO;
+import rentacar.entity.dto.LoginDTO;
 import rentacar.repository.AppuserRepository;
 
 import java.util.Collection;
 
 @RestController
+@CrossOrigin
 public class AppuserController {
     @Autowired
     private AppuserRepository appuserRepository;
@@ -25,9 +27,29 @@ public class AppuserController {
         return appuserRepository.getOne(id);
     }
 
+//    @GetMapping("appuserEmail/{email}")
+//    public Collection<Appuser> getAppuserByEmail(@PathVariable("email") String email) {
+//        return appuserRepository.findByEmailEqualsIgnoreCase(email);
+//    }
+
     @GetMapping("appuserEmail/{email}")
-    public Collection<Appuser> getAppuserByEmail(@PathVariable("email") String email) {
-        return appuserRepository.findByEmailContainingIgnoreCase(email);
+    public Appuser getAppuserByEmail(@PathVariable("email") String email) {
+        return appuserRepository.findByEmailEqualsIgnoreCase(email);
+    }
+
+    @PostMapping("login")
+    public ResponseEntity login(@RequestBody LoginDTO loginData) {
+        Appuser user = appuserRepository.findByEmailEqualsIgnoreCase(loginData.email);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (!user.getPassword().equals(loginData.password)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("appuser")

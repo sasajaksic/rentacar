@@ -15,7 +15,6 @@ import rentacar.repository.FineRepository;
 import rentacar.repository.RentRepository;
 import rentacar.repository.ReportRepository;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -23,6 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @RestController
+@CrossOrigin
 public class ReportController {
 
     @Autowired
